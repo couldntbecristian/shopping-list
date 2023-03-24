@@ -1,6 +1,7 @@
 const itemForm = document.getElementById('item-form');
 const itemInput = document.getElementById('item-input');
 const itemList = document.getElementById('item-list');
+const clearBtn = document.getElementById('clear')
 
 function addItem(e) {
   e.preventDefault();
@@ -39,26 +40,27 @@ function createIcon(classes) {
   return icon;
 }
 
+
+// remove items
+function removeItem(e){
+  if(e.target.tagName === 'I'){
+    // e.target.parentElement.parentElement.remove()
+    e.target.closest('li').remove()
+  }
+}
+
+
+// clear all items
+// function clearItems(){
+//   itemList.remove()
+// }
+function clearItems() {
+  while (itemList.firstChild) {
+    itemList.removeChild(itemList.firstChild);
+  }
+}
+
 // Event Listeners
 itemForm.addEventListener('submit', addItem);
-
-
-
-const rowWeights = arr => {
-  let a = []
-  let b = []
-
-  arr.forEach((v, i) => {
-    if (i %2 === 0){
-      a.push(v)
-    } else {
-      b.push(v)
-    }
-  })
-
-  let aTotal = a.reduce((a, c) => a + c, 0)
-  let bTotal =  b.reduce((a,c) => a + c, 0)
-
-  return [(aTotal, bTotal)]
-}
-console.log(rowWeights([80, 0]))
+itemList.addEventListener('click', removeItem);
+clearBtn.addEventListener('click', clearItems);
