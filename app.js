@@ -44,16 +44,12 @@ function createIcon(classes) {
 // remove items
 function removeItem(e){
   if(e.target.tagName === 'I'){
-    // e.target.parentElement.parentElement.remove()
     e.target.closest('li').remove()
   }
 }
 
 
 // clear all items
-// function clearItems(){
-//   itemList.remove()
-// }
 function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
