@@ -64,6 +64,26 @@ function clearItems() {
   checkUI()
 }
 
+
+// filter items
+function filterItems (e){
+  const items = itemList.querySelectorAll('li')
+  const text = e.target.value.toLowerCase()
+
+  items.forEach(item => {
+    const itemName = item.innerText.toLowerCase()
+    // const itemName = item.firstChild.textContent.toLowerCase()
+
+    if(itemName.indexOf(text) != -1){
+      // item.style.display = 'block'   /changes the display from flex to block
+      item.style.display = 'flex'
+    } else {
+      item.style.display = 'none'
+    }
+  })
+}
+
+
 // check ui
 function checkUI(){
   const items = itemList.querySelectorAll('li')
@@ -77,9 +97,13 @@ function checkUI(){
   }
 }
 
+
 // Event Listeners
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 clearBtn.addEventListener('click', clearItems);
+itemFilter.addEventListener('input', filterItems)
 
 checkUI()
+
+
