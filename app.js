@@ -71,11 +71,9 @@ function filterItems (e){
   const text = e.target.value.toLowerCase()
 
   items.forEach(item => {
-    const itemName = item.innerText.toLowerCase()
-    // const itemName = item.firstChild.textContent.toLowerCase()
+    const itemName = item.firstChild.textContent.toLowerCase()
 
     if(itemName.indexOf(text) != -1){
-      // item.style.display = 'block'   /changes the display from flex to block
       item.style.display = 'flex'
     } else {
       item.style.display = 'none'
