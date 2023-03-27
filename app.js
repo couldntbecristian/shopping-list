@@ -4,6 +4,12 @@ const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear')
 const itemFilter = document.getElementById('filter')
 
+function displayItems(){
+  const itemsFromStorage = getItemsFromStorage()
+  itemsFromStorage.forEach(item => addItemToDOM(item))
+  checkUI()
+}
+
 function onAddItemSubmit(e) {
   e.preventDefault();
 
@@ -37,24 +43,6 @@ function addItemToDOM(item){
   itemList.appendChild(li);
 }
 
-// Local storage
-function addItemToStorage(item){
-  let itemsFromStorage
-
-  if(localStorage.getItem('items') === null){
-    itemsFromStorage = []
-  } else {
-    itemsFromStorage = JSON.parse(localStorage.getItem('items'))
-  }
-
-  // Add new item to array
-  itemsFromStorage.push(item)
-
-  // Convert to JSON string and set to local storage
-  localStorage.setItem('items', JSON.stringify(itemsFromStorage))
-}
-
-
 function createButton(classes) {
   const button = document.createElement('button');
   button.className = classes;
@@ -69,16 +57,70 @@ function createIcon(classes) {
   return icon;
 }
 
+// Local storage
+function addItemToStorage(item){
+  let itemsFromStorage = getItemsFromStorage()
+
+  // if(localStorage.getItem('items') === null){
+  //   itemsFromStorage = []
+  // } else {
+  //   itemsFromStorage = JSON.parse(localStorage.getItem('items'))
+  // }
+  // Instead of repeating, we'll just call it 
+
+  // Add new item to array
+  itemsFromStorage.push(item)
+
+  // Convert to JSON string and set to local storage
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage))
+}
+
+function getItemsFromStorage(){
+  let itemsFromStorage 
+
+  if (localStorage.getItem('items') === null){
+    itemsFromStorage = []
+  } else {
+    itemsFromStorage = JSON.parse(localStorage.getItem('items'))
+  }
+
+  return itemsFromStorage
+}
+
+function onClickItem(e) {
+  if(e.target.tagName === 'I'){
+    removeItem(e.target.closest('li'))
+  }
+}
 
 // remove items
-function removeItem(e){
-  if(e.target.tagName === 'I'){
-    if (window.confirm('Are you sure?')){
-      e.target.closest('li').remove()
+function removeItem(item){
+  if(confirm('Are you sure?')){
+    // Remove item from DOM
+    item.remove()
 
-      checkUI()
-    }
+    // Remove item from storage
+    removeItemFromStorage(item.textContent)
+
+    checkUI()
   }
+  // if(e.target.tagName === 'I'){
+  //   if (window.confirm('Are you sure?')){
+  //     e.target.closest('li').remove()
+
+  //     checkUI()
+  //   }
+  // }
+}
+
+function removeItemFromStorage(item){
+  let itemsFromStorage = getItemsFromStorage()
+
+  // Filter out item to be removed
+  itemsFromStorage = itemsFromStorage.filter(i => i !== item) 
+
+  // Re-set to localStorage
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage))
 }
 
 
@@ -87,6 +129,9 @@ function clearItems() {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
+
+  // Clear from localStorage
+  localStorage.removeItem('items')
   checkUI()
 }
 
@@ -121,12 +166,16 @@ function checkUI(){
   }
 }
 
+// Initialize App
+function init() {
+  // Event Listeners
+  itemForm.addEventListener('submit', onAddItemSubmit);
+  itemList.addEventListener('click', onClickItem);
+  clearBtn.addEventListener('click', clearItems);
+  itemFilter.addEventListener('input', filterItems)
+  document.addEventListener('DOMContentLoaded', displayItems)
+  
+  checkUI()
+}
 
-// Event Listeners
-itemForm.addEventListener('submit', onAddItemSubmit);
-itemList.addEventListener('click', removeItem);
-clearBtn.addEventListener('click', clearItems);
-itemFilter.addEventListener('input', filterItems)
-
-checkUI()
-
+init()
