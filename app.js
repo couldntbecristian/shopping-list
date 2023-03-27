@@ -61,13 +61,6 @@ function createIcon(classes) {
 function addItemToStorage(item){
   let itemsFromStorage = getItemsFromStorage()
 
-  // if(localStorage.getItem('items') === null){
-  //   itemsFromStorage = []
-  // } else {
-  //   itemsFromStorage = JSON.parse(localStorage.getItem('items'))
-  // }
-  // Instead of repeating, we'll just call it 
-
   // Add new item to array
   itemsFromStorage.push(item)
 
@@ -104,13 +97,6 @@ function removeItem(item){
 
     checkUI()
   }
-  // if(e.target.tagName === 'I'){
-  //   if (window.confirm('Are you sure?')){
-  //     e.target.closest('li').remove()
-
-  //     checkUI()
-  //   }
-  // }
 }
 
 function removeItemFromStorage(item){
