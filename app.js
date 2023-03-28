@@ -107,12 +107,6 @@ function onClickItem(e) {
 
 function checkIfItemExists(item){
   const itemsFromStorage = getItemsFromStorage()
-
-  // if(itemsFromStorage.includes(item)){
-  //   return true
-  // } else {
-  //   return false 
-  // }
   return itemsFromStorage.includes(item)
 }
 
